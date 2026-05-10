@@ -75,21 +75,31 @@ export function ProjectDetail() {
                 </div>
                 <div className="mt-4 space-y-3">
                   {tasksByStatus[status].length === 0 && <p className="rounded-md border border-dashed border-line p-4 text-sm text-slate-500">No tasks</p>}
-                  {tasksByStatus[status].map((task) => (
-                    <article key={task.id} className="rounded-md border border-line p-4">
-                      <div className="flex flex-wrap gap-2">
-                        <PriorityBadge priority={task.priority} label={priorityLabels[task.priority]} />
-                        {isOverdue(task.dueDate, task.status) && <Badge tone="danger">Overdue</Badge>}
-                      </div>
-                      <h4 className="mt-3 font-semibold">{task.title}</h4>
-                      <p className="mt-1 line-clamp-2 text-sm text-slate-500">{task.description || "No description"}</p>
-                      <p className="mt-3 text-xs text-slate-500">Assigned to {task.assignedTo?.name || "Unassigned"}</p>
-                      <p className="mt-1 text-xs text-slate-500">Due {formatDate(task.dueDate)}</p>
-                      <select value={task.status} onChange={(event) => updateTask(task.id, event.target.value as TaskStatus)} className="mt-3 w-full rounded-md border border-line px-2 py-2 text-sm outline-none focus:border-teal">
-                        {statuses.map((item) => <option key={item} value={item}>{statusLabels[item]}</option>)}
-                      </select>
-                    </article>
-                  ))}
+                  {tasksByStatus[status].map((task) => {
+                    const canUpdateStatus = Boolean(isAdmin || task.assignedTo?.id === user?.id);
+                    return (
+                      <article key={task.id} className="rounded-md border border-line p-4">
+                        <div className="flex flex-wrap gap-2">
+                          <PriorityBadge priority={task.priority} label={priorityLabels[task.priority]} />
+                          {isOverdue(task.dueDate, task.status) && <Badge tone="danger">Overdue</Badge>}
+                        </div>
+                        <h4 className="mt-3 font-semibold">{task.title}</h4>
+                        <p className="mt-1 line-clamp-2 text-sm text-slate-500">{task.description || "No description"}</p>
+                        <p className="mt-3 text-xs text-slate-500">Assigned to {task.assignedTo?.name || "Unassigned"}</p>
+                        <p className="mt-1 text-xs text-slate-500">Due {formatDate(task.dueDate)}</p>
+                        <select
+                          value={task.status}
+                          disabled={!canUpdateStatus}
+                          title={canUpdateStatus ? "Update task status" : "Only admins or the assigned member can update this task"}
+                          onChange={(event) => updateTask(task.id, event.target.value as TaskStatus)}
+                          className="mt-3 w-full rounded-md border border-line px-2 py-2 text-sm outline-none focus:border-teal disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+                        >
+                          {statuses.map((item) => <option key={item} value={item}>{statusLabels[item]}</option>)}
+                        </select>
+                        {!canUpdateStatus && <p className="mt-2 text-xs text-slate-500">Only admins or the assigned member can update this status.</p>}
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             ))}
