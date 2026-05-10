@@ -19,6 +19,7 @@ export function Dashboard() {
 
   if (error) return <Layout><p className="rounded-lg bg-red-50 p-4 text-red-700">{error}</p></Layout>;
   if (!data) return <Layout><DashboardSkeleton /></Layout>;
+  const hasNoProjects = data.stats.projectCount === 0;
 
   return (
     <Layout>
@@ -29,6 +30,18 @@ export function Dashboard() {
         </div>
         <Link to="/projects" className="rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50">Manage projects</Link>
       </div>
+
+      {hasNoProjects && (
+        <section className="mt-6 rounded-lg border border-dashed border-line bg-white p-6 shadow-soft">
+          <p className="text-lg font-semibold">No project access yet</p>
+          <p className="mt-2 max-w-2xl text-sm text-slate-500">
+            Create your first project to become its admin, or ask an existing project admin to add your email as a member.
+          </p>
+          <Link to="/projects" className="mt-4 inline-flex rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+            Create a project
+          </Link>
+        </section>
+      )}
 
       <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={<FolderKanban />} label="Projects" value={data.stats.projectCount} />
@@ -67,7 +80,7 @@ export function Dashboard() {
         <div className="rounded-lg border border-line bg-white p-5 shadow-soft">
           <h3 className="text-lg font-semibold">Active projects</h3>
           <div className="mt-4 space-y-3">
-            {data.projects.length === 0 && <p className="text-sm text-slate-500">Create your first project to start tracking team work.</p>}
+            {data.projects.length === 0 && <p className="text-sm text-slate-500">Projects you create or are invited to will appear here.</p>}
             {data.projects.slice(0, 5).map((project) => (
               <Link key={project.id} to={`/projects/${project.id}`} className="block rounded-md border border-line p-4 hover:border-teal">
                 <div className="flex items-center justify-between gap-3">
@@ -108,7 +121,7 @@ function TaskPanel({ title, tasks, empty = "No tasks assigned yet." }: { title: 
               {isOverdue(task.dueDate, task.status) && <span className="text-xs font-semibold text-red-700">Overdue</span>}
             </div>
             <p className="mt-3 font-semibold">{task.title}</p>
-            <p className="mt-1 text-sm text-slate-500">{task.project?.name} · {formatDate(task.dueDate)}</p>
+            <p className="mt-1 text-sm text-slate-500">{task.project?.name} - {formatDate(task.dueDate)}</p>
           </Link>
         ))}
       </div>

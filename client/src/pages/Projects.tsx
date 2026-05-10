@@ -44,8 +44,11 @@ export function Projects() {
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {loading && [1, 2, 3, 4].map((item) => <div key={item} className="h-44 animate-pulse rounded-lg bg-white" />)}
             {!loading && projects.length === 0 && (
-              <div className="rounded-lg border border-dashed border-line bg-white p-8 text-center text-slate-500 md:col-span-2">
-                No projects yet. Create one to invite members and assign tasks.
+              <div className="rounded-lg border border-dashed border-line bg-white p-8 text-center md:col-span-2">
+                <p className="text-lg font-semibold text-ink">No projects yet</p>
+                <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+                  Create a project to become its admin, or ask another admin to add your signed-up email to their project.
+                </p>
               </div>
             )}
             {projects.map((project) => {

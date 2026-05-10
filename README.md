@@ -34,6 +34,17 @@ Admin:  admin@ethara.ai  / Password123
 Member: member@ethara.ai / Password123
 ```
 
+## Role Rules
+
+Roles are scoped to each project, not globally across the entire app.
+
+- Any authenticated user can create a project.
+- The project creator automatically becomes `ADMIN` for that project.
+- Project admins can update project details, add members/admins, create tasks, assign work, and update any task status.
+- Project members can view the project and update only tasks assigned to them.
+- Signing up creates a user account, but does not automatically add that user to an existing project.
+- To add someone to a project, that person must sign up first, then a project admin can add them by email.
+
 ## Local Setup
 
 1. Install dependencies:
