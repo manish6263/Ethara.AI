@@ -39,14 +39,45 @@ export function Layout({ children }: { children: ReactNode }) {
               <span className="font-bold">TaskFlow</span>
             </Link>
             <div className="hidden text-sm text-slate-500 lg:block">Team task manager with project-level roles</div>
-            <Link to="/projects" className="inline-flex items-center gap-2 rounded-md bg-ink px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-              <PlusCircle size={16} /> New work
-            </Link>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 lg:hidden">
+                <MobileNavButton to="/dashboard" label="Dashboard" icon={<BarChart3 size={18} />} />
+                <MobileNavButton to="/projects" label="Projects" icon={<FolderKanban size={18} />} />
+                <button
+                  onClick={onLogout}
+                  aria-label="Logout"
+                  title="Logout"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-white text-slate-600 hover:bg-slate-50"
+                >
+                  <LogOut size={18} />
+                </button>
+              </div>
+              <Link to="/projects" className="hidden items-center gap-2 rounded-md bg-ink px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800 sm:inline-flex">
+                <PlusCircle size={16} /> New work
+              </Link>
+            </div>
           </div>
         </header>
         <main className="px-4 py-6 lg:px-8">{children}</main>
       </div>
     </div>
+  );
+}
+
+function MobileNavButton({ to, icon, label }: { to: string; icon: ReactNode; label: string }) {
+  return (
+    <NavLink
+      to={to}
+      aria-label={label}
+      title={label}
+      className={({ isActive }) =>
+        `inline-flex h-9 w-9 items-center justify-center rounded-md border border-line ${
+          isActive ? "bg-ink text-white" : "bg-white text-slate-600 hover:bg-slate-50"
+        }`
+      }
+    >
+      {icon}
+    </NavLink>
   );
 }
 
