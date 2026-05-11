@@ -34,9 +34,10 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <div className="lg:pl-64">
         <header className="sticky top-0 z-10 border-b border-line bg-white/95 px-4 py-3 backdrop-blur lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link to="/dashboard" className="lg:hidden">
-              <span className="font-bold">TaskFlow</span>
+          <div className="flex items-center justify-between gap-3">
+            <Link to="/dashboard" className="min-w-0 lg:hidden">
+              <span className="block font-bold">TaskFlow</span>
+              <span className="block max-w-[150px] truncate text-xs text-slate-500">{user?.name || user?.email}</span>
             </Link>
             <div className="hidden text-sm text-slate-500 lg:block">Team task manager with project-level roles</div>
             <div className="flex items-center gap-2">
