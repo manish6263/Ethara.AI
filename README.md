@@ -123,7 +123,7 @@ Dashboard:
 ```text
 DATABASE_URL=<Railway PostgreSQL connection string>
 JWT_SECRET=<long random secret>
-CLIENT_URL=<your Railway app URL>
+CLIENT_URL=https://server-production-0585.up.railway.app/
 NODE_ENV=production
 ```
 
@@ -135,10 +135,3 @@ Start: npm run railway:start
 ```
 
 The start command runs Prisma migrations before starting the Express server.
-
-## Submission Checklist
-
-- Live Railway URL
-- GitHub repository URL
-- README with setup and deployment details
-- 2-5 minute demo video showing auth, project creation, member invite, task assignment, status update, dashboard, and role restrictions
