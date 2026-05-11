@@ -49,7 +49,9 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
           <p className="text-sm font-semibold uppercase tracking-wide text-teal">TaskFlow</p>
           <h2 className="mt-2 text-3xl font-bold">{mode === "signup" ? "Create account" : "Welcome back"}</h2>
           <p className="mt-2 text-sm text-slate-500">
-            Demo: admin@ethara.ai or member@ethara.ai with Password123 after seeding.
+            {mode === "signup"
+              ? "Create your workspace account, then create a project or ask an admin to add you."
+              : "Login with your account to manage projects, tasks, and team progress."}
           </p>
 
           <div className="mt-6 space-y-4">

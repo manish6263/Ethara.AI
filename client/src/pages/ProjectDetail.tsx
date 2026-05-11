@@ -109,7 +109,7 @@ export function ProjectDetail() {
         <aside className="space-y-6">
           {isAdmin && <TaskForm project={project} onDone={loadProject} />}
           {isAdmin && <MemberForm projectId={project.id} onDone={loadProject} />}
-          <Members members={project.members} />
+          <Members projectId={project.id} members={project.members} canManage={Boolean(isAdmin)} onDone={loadProject} />
         </aside>
       </section>
     </Layout>
@@ -207,18 +207,79 @@ function MemberForm({ projectId, onDone }: { projectId: string; onDone: () => Pr
   );
 }
 
-function Members({ members }: { members: Project["members"] }) {
+function Members({
+  projectId,
+  members,
+  canManage,
+  onDone
+}: {
+  projectId: string;
+  members: Project["members"];
+  canManage: boolean;
+  onDone: () => Promise<void>;
+}) {
+  const [error, setError] = useState("");
+  const adminCount = members.filter((member) => member.role === "ADMIN").length;
+
+  async function updateRole(memberId: string, role: ProjectRole) {
+    setError("");
+    try {
+      await api(`/api/projects/${projectId}/members/${memberId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ role })
+      });
+      await onDone();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update member role");
+    }
+  }
+
+  async function removeMember(memberId: string) {
+    setError("");
+    try {
+      await api(`/api/projects/${projectId}/members/${memberId}`, { method: "DELETE" });
+      await onDone();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not remove member");
+    }
+  }
+
   return (
     <div className="rounded-lg border border-line bg-white p-5 shadow-soft">
       <h3 className="text-lg font-semibold">Team</h3>
+      {error && <p className="mt-3 rounded-md bg-red-50 p-2 text-sm text-red-700">{error}</p>}
       <div className="mt-4 space-y-3">
         {members.map((member) => (
-          <div key={member.id} className="flex items-center justify-between gap-3 rounded-md border border-line p-3">
-            <div>
-              <p className="font-medium">{member.user.name}</p>
-              <p className="text-xs text-slate-500">{member.user.email}</p>
+          <div key={member.id} className="rounded-md border border-line p-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-medium">{member.user.name}</p>
+                <p className="text-xs text-slate-500">{member.user.email}</p>
+              </div>
+              <Badge tone={member.role === "ADMIN" ? "admin" : "neutral"}>{member.role}</Badge>
             </div>
-            <Badge tone={member.role === "ADMIN" ? "admin" : "neutral"}>{member.role}</Badge>
+            {canManage && (
+              <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+                <select
+                  value={member.role}
+                  disabled={member.role === "ADMIN" && adminCount <= 1}
+                  title={member.role === "ADMIN" && adminCount <= 1 ? "A project must keep at least one admin" : "Change project role"}
+                  onChange={(event) => updateRole(member.id, event.target.value as ProjectRole)}
+                  className="rounded-md border border-line px-2 py-2 text-sm outline-none focus:border-teal disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+                >
+                  <option value="MEMBER">Member</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+                <button
+                  disabled={member.role === "ADMIN" && adminCount <= 1}
+                  onClick={() => removeMember(member.id)}
+                  title={member.role === "ADMIN" && adminCount <= 1 ? "A project must keep at least one admin" : "Remove member"}
+                  className="rounded-md border border-line px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>

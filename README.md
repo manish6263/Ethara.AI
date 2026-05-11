@@ -25,14 +25,16 @@ Ethara TaskFlow is a full-stack team task manager built for the Ethara.AI Softwa
 - Zod validation
 - Railway deployment
 
-## Demo Accounts
+## Optional Local Seed Accounts
 
-After running the seed script:
+After running the seed script locally, these accounts are available for quick testing:
 
 ```text
 Admin:  admin@ethara.ai  / Password123
 Member: member@ethara.ai / Password123
 ```
+
+The deployed production app can be used from a fresh signup flow without seed data.
 
 ## Role Rules
 
