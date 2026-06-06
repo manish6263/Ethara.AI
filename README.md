@@ -1,6 +1,6 @@
 # Ethara TaskFlow
 Live Link: https://server-production-0585.up.railway.app/
-Ethara TaskFlow is a full-stack team task manager built for the Ethara.AI Software Engineer assessment. It lets users create projects, invite team members, assign work, update task status, and monitor progress through a responsive dashboard.
+Ethara TaskFlow is a full-stack team task manager built for the Ethara.AI. It lets users create projects, invite team members, assign work, update task status, and monitor progress through a responsive dashboard.
 
 ## Features
 
