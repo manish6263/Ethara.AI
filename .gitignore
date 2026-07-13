@@ -8,3 +8,4 @@ server/prisma/dev.db
 *.pdf
 .DS_Store
 .vercel
+*.mp4
