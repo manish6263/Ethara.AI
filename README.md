@@ -135,3 +135,28 @@ Start: npm run railway:start
 ```
 
 The start command runs Prisma migrations before starting the Express server.
+
+## Vercel Deployment
+
+This project can also be deployed on Vercel as a Vite static frontend plus serverless Express API functions.
+
+Vercel provides a free Hobby plan, but it does not replace the PostgreSQL database. Use an external PostgreSQL provider such as Neon or Supabase and copy its connection string into Vercel.
+
+Required Vercel environment variables:
+
+```text
+DATABASE_URL=<external PostgreSQL connection string>
+JWT_SECRET=<long random secret>
+CLIENT_URL=<your Vercel production URL>
+NODE_ENV=production
+```
+
+Vercel uses `vercel.json`:
+
+```text
+Build: npm run vercel:build
+Output: client/dist
+API: api/[...path].ts
+```
+
+The Vercel build command runs Prisma migrations before building the app.

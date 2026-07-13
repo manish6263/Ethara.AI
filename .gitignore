@@ -7,3 +7,4 @@ server/prisma/dev.db
 *.log
 *.pdf
 .DS_Store
+.vercel
