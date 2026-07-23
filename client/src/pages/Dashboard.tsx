@@ -44,10 +44,10 @@ export function Dashboard() {
       )}
 
       <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard icon={<FolderKanban />} label="Projects" value={data.stats.projectCount} />
-        <StatCard icon={<ClipboardList />} label="Tasks" value={data.stats.taskCount} />
-        <StatCard icon={<CheckCircle2 />} label="Done" value={data.stats.doneCount} />
-        <StatCard icon={<AlertTriangle />} label="Overdue" value={data.stats.overdueCount} danger />
+        <StatCard icon={<FolderKanban />} label="Projects" value={data.stats.projectCount} delay={0} />
+        <StatCard icon={<ClipboardList />} label="Tasks" value={data.stats.taskCount} delay={50} />
+        <StatCard icon={<CheckCircle2 />} label="Done" value={data.stats.doneCount} delay={100} />
+        <StatCard icon={<AlertTriangle />} label="Overdue" value={data.stats.overdueCount} danger delay={150} />
       </section>
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_1.25fr]">
@@ -63,8 +63,8 @@ export function Dashboard() {
                     <span>{statusLabels[status]}</span>
                     <span className="font-semibold">{count}</span>
                   </div>
-                  <div className="h-2 rounded-full bg-slate-100">
-                    <div className="h-2 rounded-full bg-teal" style={{ width: `${percent}%` }} />
+                  <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-2 rounded-full bg-teal transition-[width] duration-700 ease-out" style={{ width: `${percent}%` }} />
                   </div>
                 </div>
               );
@@ -82,7 +82,11 @@ export function Dashboard() {
           <div className="mt-4 space-y-3">
             {data.projects.length === 0 && <p className="text-sm text-slate-500">Projects you create or are invited to will appear here.</p>}
             {data.projects.slice(0, 5).map((project) => (
-              <Link key={project.id} to={`/projects/${project.id}`} className="block rounded-md border border-line p-4 hover:border-teal">
+              <Link
+                key={project.id}
+                to={`/projects/${project.id}`}
+                className="block rounded-md border border-line p-4 transition-all hover:-translate-y-0.5 hover:border-teal hover:shadow-soft"
+              >
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-semibold">{project.name}</p>
                   <span className="text-sm text-slate-500">{project.tasks.length} tasks</span>
@@ -97,9 +101,24 @@ export function Dashboard() {
   );
 }
 
-function StatCard({ icon, label, value, danger = false }: { icon: React.ReactNode; label: string; value: number; danger?: boolean }) {
+function StatCard({
+  icon,
+  label,
+  value,
+  danger = false,
+  delay = 0
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  danger?: boolean;
+  delay?: number;
+}) {
   return (
-    <div className="rounded-lg border border-line bg-white p-5 shadow-soft">
+    <div
+      style={{ animationDelay: `${delay}ms` }}
+      className="animate-fade-in-up rounded-lg border border-line bg-white p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lg"
+    >
       <div className={`mb-4 inline-flex rounded-md p-2 ${danger ? "bg-red-50 text-red-700" : "bg-teal-50 text-teal"}`}>{icon}</div>
       <p className="text-sm text-slate-500">{label}</p>
       <p className="mt-1 text-3xl font-bold">{value}</p>
@@ -114,7 +133,11 @@ function TaskPanel({ title, tasks, empty = "No tasks assigned yet." }: { title: 
       <div className="mt-4 space-y-3">
         {tasks.length === 0 && <p className="text-sm text-slate-500">{empty}</p>}
         {tasks.map((task) => (
-          <Link key={task.id} to={`/projects/${task.project?.id}`} className="block rounded-md border border-line p-4 hover:border-teal">
+          <Link
+            key={task.id}
+            to={`/projects/${task.project?.id}`}
+            className="block rounded-md border border-line p-4 transition-all hover:-translate-y-0.5 hover:border-teal hover:shadow-soft"
+          >
             <div className="flex flex-wrap items-center gap-2">
               <StatusBadge status={task.status} label={statusLabels[task.status]} />
               <PriorityBadge priority={task.priority} label={priorityLabels[task.priority]} />

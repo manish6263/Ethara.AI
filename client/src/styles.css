@@ -25,3 +25,48 @@ select {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.15s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s ease-out both;
+}
+
+.animate-pop-in {
+  animation: pop-in 0.15s ease-out;
+}
+
+.animate-toast-in {
+  animation: toast-in 0.25s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-pop-in,
+  .animate-toast-in {
+    animation: none;
+  }
+}
