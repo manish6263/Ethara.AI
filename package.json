@@ -2,6 +2,7 @@
   "name": "ethara-taskflow",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Full-stack team task manager assessment for Ethara.AI.",
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
